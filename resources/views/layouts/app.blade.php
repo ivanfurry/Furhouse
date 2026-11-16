@@ -6,6 +6,22 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'FurHouse') — Community Market</title>
 
+    @if(request()->routeIs('support.*'))
+    <link rel="stylesheet" href="{{ asset('css/support.css') }}">
+    @endif
+
+    @if(request()->routeIs('profile'))
+    <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
+    @endif
+
+    @if(request()->routeIs('admin.announcements*'))
+    <link rel="stylesheet" href="{{ asset('css/announcements.css') }}">
+    @endif
+    
+    @if(request()->routeIs('rules'))
+    <link rel="stylesheet" href="{{ asset('css/rules.css') }}">
+    @endif
+
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
@@ -1272,6 +1288,7 @@
                                 {{ auth()->user()->name }}
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="{{ route('support.index') }}"><i class="bi bi-life-preserver me-2"></i>Мои обращения</a></li>
                                 <li><a class="dropdown-item" href="{{ route('profile') }}"><i class="bi bi-person me-2"></i>Профиль</a></li>
                                 @if(auth()->user()->isAdmin())
                                     <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}"><i class="bi bi-shield-check me-2"></i>Админ-панель</a></li>
@@ -1365,9 +1382,9 @@
 
                 <div class="col-lg-2 col-md-4">
                     <h6>Помощь</h6>
-                    <a href="#">Правила и безопасность</a>
-                    <a href="#">Поддержка</a>
-                    <a href="#">Обратная связь</a>
+                    <a href="{{ route('rules') }}">Правила и безопасность</a>
+                    <a href="{{ route('support.create') }}">Поддержка</a>
+                    <a href="{{ route('support.index') }}">Обратная связь</a>
                 </div>
 
                 <div class="col-lg-2">

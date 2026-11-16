@@ -28,7 +28,7 @@
             <div style="font-size:0.9rem; color:var(--fh-text-muted);">
                 <i class="bi bi-clock me-2"></i>{{ $onlineCount }} участников онлайн · {{ $newThreadsToday }} новых тредов сегодня
             </div>
-            <a href="#" class="text-decoration-none" style="font-size:0.9rem; color:var(--fh-primary); font-weight:500;">Правила и безопасность</a>
+            <a href="{{ route('rules') }}" class="text-decoration-none" style="font-size:0.9rem; color:var(--fh-primary); font-weight:500;">Правила и безопасность</a>
         </div>
     </div>
 </section>

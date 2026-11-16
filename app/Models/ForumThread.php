@@ -69,7 +69,7 @@ class ForumThread extends Model
 
     public function posts(): HasMany
     {
-        return $this->hasMany(ForumPost::class);
+        return $this->hasMany(ForumPost::class, 'thread_id');
     }
 
     public function scopePinned($query)

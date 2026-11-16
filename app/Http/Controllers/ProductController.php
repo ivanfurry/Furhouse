@@ -93,6 +93,10 @@ class ProductController extends Controller
 
      public function store(Request $request)
     {
+        if (!auth()->user()->can_post_products) {
+        return back()->with('error', 'Вам запрещено размещать товары.');
+        }
+
         $this->authorizeMaster();
 
         $validated = $request->validate([

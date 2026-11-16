@@ -18,7 +18,11 @@ class HomeController extends Controller
             ->limit(3)
             ->get();
 
-        $categories = Category::active()->ordered()->get();
+        // ИСПРАВЛЕНО: добавлен withCount('products')
+        $categories = Category::active()
+            ->ordered()
+            ->withCount('products')
+            ->get();
 
         $upcomingEvents = Event::upcoming()
             ->with('user')
@@ -37,4 +41,9 @@ class HomeController extends Controller
             'featuredEvent'
         ));
     }
+
+    public function rules()
+    {
+        return view('rules');
+    }   
 }

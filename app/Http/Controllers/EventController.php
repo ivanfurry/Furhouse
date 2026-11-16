@@ -57,6 +57,10 @@ class EventController extends Controller
 
     public function store(Request $request)
     {
+        if (!auth()->user()->can_create_events) {
+            return back()->with('error', 'Вам запрещено создавать встречи.');
+        }
+
         $this->authorizeOrganizer();
 
         $validated = $request->validate([

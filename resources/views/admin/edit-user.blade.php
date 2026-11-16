@@ -56,7 +56,7 @@
                             <div class="col-md-6">
                                 <div class="form-check mt-4">
                                     <input class="form-check-input" type="checkbox" name="is_verified" value="1" id="isVerified" {{ $user->is_verified ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="isVerified">Проверенный пользователь</label>
+                                    <label class="form-check-label" for="isVerified">Верифицирован</label>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -74,6 +74,50 @@
                             <a href="{{ route('admin.users') }}" class="fh-btn fh-btn-ghost px-4 py-2">Отмена</a>
                         </div>
                     </form>
+
+                    {{-- Блок текущих ограничений --}}
+                    @if($user->hasRestrictions())
+                    <hr class="my-4">
+                    <div class="alert alert-warning fh-alert">
+                        <h5 style="font-weight:600; margin-bottom:12px;">
+                            <i class="bi bi-shield-x me-2"></i>Текущие ограничения
+                        </h5>
+                        <ul class="mb-2">
+                            @foreach($user->getRestrictionsList() as $restriction)
+                                <li>{{ $restriction }}</li>
+                            @endforeach
+                        </ul>
+                        @if($user->restriction_reason)
+                            <div style="font-size:0.9rem;">
+                                <strong>Причина:</strong> {{ $user->restriction_reason }}
+                            </div>
+                        @endif
+                        @if($user->restriction_until)
+                            <div style="font-size:0.9rem;">
+                                <strong>До:</strong> {{ $user->getRestrictionEndDate() }}
+                            </div>
+                        @else
+                            <div style="font-size:0.9rem;">
+                                <strong>Срок:</strong> Бессрочно
+                            </div>
+                        @endif
+                        <form method="POST" action="{{ route('admin.users.remove-restrictions', $user) }}" class="mt-3">
+                            @csrf
+                            <button type="submit" class="fh-btn fh-btn-primary" onclick="return confirm('Снять все ограничения?')">
+                                <i class="bi bi-shield-check me-2"></i>Снять все ограничения
+                            </button>
+                        </form>
+                    </div>
+                    @else
+                    <hr class="my-4">
+                    <div class="alert alert-success fh-alert">
+                        <i class="bi bi-shield-check me-2"></i>
+                        У пользователя нет активных ограничений.
+                        <a href="{{ route('admin.users.restrict', $user) }}" class="ms-2" style="color:var(--fh-primary); font-weight:500;">
+                            Наложить ограничения <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>

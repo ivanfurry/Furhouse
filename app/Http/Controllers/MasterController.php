@@ -72,6 +72,10 @@ class MasterController extends Controller
 
     public function store(Request $request)
     {
+        if (!auth()->user()->can_post_services) {
+            return back()->with('error', 'Вам запрещено размещать услуги.');
+        }
+
         if (!auth()->user()->isMaster()) {
             abort(403, 'Только мастера могут предлагать услуги.');
         }

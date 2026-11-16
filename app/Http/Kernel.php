@@ -47,5 +47,6 @@ class Kernel extends HttpKernel
         'master' => \App\Http\Middleware\CheckMaster::class,
         'organizer' => \App\Http\Middleware\CheckOrganizer::class,
         'moderator' => \App\Http\Middleware\CheckModerator::class,
+        'restrictions' => \App\Http\Middleware\CheckUserRestrictions::class,
     ];
 }

@@ -60,6 +60,10 @@ class ForumController extends Controller
 
     public function store(Request $request)
     {
+        if (!auth()->user()->can_post_forum) {
+            return back()->with('error', 'Вам запрещено публиковать в форуме.');
+        }    
+
         $validated = $request->validate([
             'board_id' => 'required|exists:forum_boards,id',
             'title' => 'required|string|max:255',
@@ -116,6 +120,10 @@ class ForumController extends Controller
 
     public function storePost(Request $request, ForumThread $thread)
     {
+        if (!auth()->user()->can_comment) {
+            return back()->with('error', 'Вам запрещено комментировать.');
+        }
+
         if ($thread->is_locked) {
             return back()->with('error', 'Тред заблокирован.');
         }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Favorite;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -83,13 +84,35 @@ class AuthController extends Controller
             ->with('success', 'Вы вышли из аккаунта.');
     }
 
-    public function showProfile()
+    public function showProfile(Request $request)
     {
         $user = auth()->user();
-        $products = $user->products()->active()->paginate(10);
-        $events = $user->events()->where('status', 'approved')->paginate(10);
+        $activeTab = $request->get('tab', 'all');
 
-        return view('auth.profile', compact('user', 'products', 'events'));
+        // Получаем избранное
+        $favoritesQuery = Favorite::where('user_id', $user->id)->with('favoritable.user');
+
+        if ($activeTab === 'products') {
+            $favoritesQuery->where('favoritable_type', 'App\\Models\\Product');
+        } elseif ($activeTab === 'services') {
+            $favoritesQuery->where('favoritable_type', 'App\\Models\\Service');
+        }
+
+        $favorites = $favoritesQuery->get();
+
+        // Счётчики
+        $productsCount = Favorite::where('user_id', $user->id)
+            ->where('favoritable_type', 'App\\Models\\Product')
+            ->count();
+        $servicesCount = Favorite::where('user_id', $user->id)
+            ->where('favoritable_type', 'App\\Models\\Service')
+            ->count();
+        $favoritesCount = $productsCount + $servicesCount;
+
+        return view('auth.profile', compact(
+            'user', 'favorites', 'activeTab',
+            'productsCount', 'servicesCount', 'favoritesCount'
+        ));
     }
 
     public function updateProfile(Request $request)
@@ -102,7 +125,7 @@ class AuthController extends Controller
             'email' => 'required|email|unique:users,email,' . $user->id,
             'bio' => 'nullable|string|max:1000',
             'city' => 'nullable|string|max:100',
-            'avatar' => 'nullable|image|max:2048',
+            'avatar' => 'nullable|image|max:5120',
         ]);
 
         if ($request->hasFile('avatar')) {
@@ -126,5 +149,21 @@ class AuthController extends Controller
         ]);
 
         return back()->with('success', 'Пароль изменён!');
+    }
+
+    public function removeFavorite(Favorite $favorite)
+    {
+        if ($favorite->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $favorite->delete();
+
+        return response()->json(['success' => true]);
+    }
+
+    public function showPublicProfile(User $user)
+    {
+        return view('auth.public-profile', compact('user'));
     }
 }

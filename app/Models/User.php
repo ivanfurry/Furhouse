@@ -25,6 +25,14 @@ class User extends Authenticatable implements MustVerifyEmail
         'city',
         'is_verified',
         'is_active',
+        'can_post_products',
+        'can_post_services',
+        'can_create_events',
+        'can_post_forum',
+        'can_comment',
+        'restriction_reason',
+        'restriction_until',
+        'restricted_by',
     ];
 
     protected $hidden = [
@@ -114,5 +122,51 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getAvatarUrlAttribute(): string
     {
         return $this->avatar ? asset('storage/' . $this->avatar) : asset('images/default-avatar.svg');
+    }
+
+    public function hasRestrictions(): bool
+    {
+        // Проверяем, есть ли хоть одно ограничение
+        return !$this->can_post_products 
+            || !$this->can_post_services 
+            || !$this->can_create_events 
+            || !$this->can_post_forum 
+            || !$this->can_comment;
+    }
+
+    public function getRestrictionsList(): array
+    {
+        $restrictions = [];
+        
+        if (!$this->can_post_products) {
+            $restrictions[] = 'Размещение товаров';
+        }
+        if (!$this->can_post_services) {
+            $restrictions[] = 'Размещение услуг';
+        }
+        if (!$this->can_create_events) {
+            $restrictions[] = 'Создание встреч';
+        }
+        if (!$this->can_post_forum) {
+            $restrictions[] = 'Публикация в форуме';
+        }
+        if (!$this->can_comment) {
+            $restrictions[] = 'Комментирование';
+        }
+        
+        return $restrictions;
+    }
+
+    public function isRestricted(): bool
+    {
+        return $this->hasRestrictions();
+    }
+
+    public function getRestrictionEndDate(): ?string
+    {
+        if ($this->restriction_until) {
+            return \Carbon\Carbon::parse($this->restriction_until)->format('d.m.Y H:i');
+        }
+        return 'Бессрочно';
     }
 }

@@ -8,6 +8,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\MasterController;
+use App\Http\Controllers\SupportTicketController;
 use Illuminate\Support\Facades\Route;
 
 // ==========================================
@@ -27,6 +28,9 @@ Route::get('/forum', [ForumController::class, 'index'])->name('forum.index');
 
 // Команда
 Route::get('/team', [TeamController::class, 'index'])->name('team');
+
+// Правила и безопасность
+Route::get('/rules', [HomeController::class, 'rules'])->name('rules');
 
 // Мастера
 Route::get('/masters', [MasterController::class, 'index'])->name('masters.index');
@@ -55,6 +59,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [AuthController::class, 'showProfile'])->name('profile');
     Route::put('/profile', [AuthController::class, 'updateProfile'])->name('profile.update');
     Route::put('/profile/password', [AuthController::class, 'changePassword'])->name('profile.password');
+   
+    // Публичный профиль пользователя
+    Route::get('/users/{user}', [AuthController::class, 'showPublicProfile'])->name('users.show');
 
     // ----- ТОВАРЫ: создание (ДО маршрутов с параметром!) -----
     Route::middleware('master')->group(function () {
@@ -98,6 +105,17 @@ Route::middleware('auth')->group(function () {
 
     // ----- МАСТЕРА: маршруты с параметром {service} -----
     Route::get('/masters/{service}', [MasterController::class, 'show'])->name('masters.show');
+
+
+    // Обращения к персоналу
+    Route::get('/support', [SupportTicketController::class, 'index'])->name('support.index');
+    Route::get('/support/create', [SupportTicketController::class, 'create'])->name('support.create');
+    Route::post('/support', [SupportTicketController::class, 'store'])->name('support.store');
+    Route::get('/support/{ticket}', [SupportTicketController::class, 'show'])->name('support.show');
+    Route::post('/support/{ticket}/reply', [SupportTicketController::class, 'reply'])->name('support.reply')->middleware('moderator');
+
+    // Удаление из избранного
+    Route::delete('/favorites/{favorite}', [AuthController::class, 'removeFavorite'])->name('favorites.remove');
 });
 
 // ==========================================
@@ -113,6 +131,11 @@ Route::prefix('admin')
         
         // Пользователи
         Route::get('/users', [AdminController::class, 'users'])->name('users');
+        Route::post('/users/{user}/verify', [AdminController::class, 'verifyUser'])->name('users.verify');
+        Route::post('/users/{user}/unverify', [AdminController::class, 'unverifyUser'])->name('users.unverify');
+        Route::get('/users/{user}/restrict', [AdminController::class, 'showRestrictForm'])->name('users.restrict');
+        Route::post('/users/{user}/restrict', [AdminController::class, 'restrictUser'])->name('users.restrict.store');
+        Route::post('/users/{user}/remove-restrictions', [AdminController::class, 'removeRestrictions'])->name('users.remove-restrictions');
         Route::get('/users/{user}/edit', [AdminController::class, 'editUser'])->name('users.edit');
         Route::put('/users/{user}', [AdminController::class, 'updateUser'])->name('users.update');
         Route::delete('/users/{user}', [AdminController::class, 'deleteUser'])->name('users.delete');
@@ -143,4 +166,10 @@ Route::prefix('admin')
         Route::get('/activity', [AdminController::class, 'activityLog'])->name('activity');
         Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
         Route::put('/settings', [AdminController::class, 'updateSettings'])->name('settings.update');
+
+        // Объявления команде
+        Route::get('/announcements', [AdminController::class, 'announcements'])->name('announcements');
+        Route::get('/announcements/create', [AdminController::class, 'createAnnouncement'])->name('announcements.create');
+        Route::post('/announcements', [AdminController::class, 'storeAnnouncement'])->name('announcements.store');
+        Route::delete('/announcements/{announcement}', [AdminController::class, 'destroyAnnouncement'])->name('announcements.destroy');
     });

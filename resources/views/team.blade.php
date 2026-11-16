@@ -35,9 +35,9 @@
             <div class="col-md-3">
                 <div class="fh-stat-card">
                     <div class="stat-icon"><i class="bi bi-chat-dots"></i></div>
-                    <div class="stat-value">14</div>
+                    <div class="stat-value">{{ \App\Models\SupportTicket::count() }}</div>
                     <div class="stat-label">Обращения</div>
-                    <div class="stat-trend">5 требуют ответа</div>
+                    <div class="stat-trend">{{ \App\Models\SupportTicket::where('status', 'open')->count() }} требуют ответа</div>
                 </div>
             </div>
             <div class="col-md-3">
@@ -100,8 +100,12 @@
                     </div>
 
                     <div class="member-actions">
-                        <a href="{{ route('profile') }}" class="fh-btn fh-btn-primary">Профиль</a>
-                        <a href="#" class="fh-btn fh-btn-ghost">Сообщение</a>
+                        <a href="{{ route('users.show', $member) }}" class="fh-btn fh-btn-primary">Профиль</a>
+                        @auth
+                            <a href="{{ route('support.create', ['to' => $member->id]) }}" class="fh-btn fh-btn-ghost">Сообщение</a>
+                        @else
+                            <a href="{{ route('login') }}" class="fh-btn fh-btn-ghost">Сообщение</a>
+                        @endauth
                     </div>
                 </div>
             </div>
@@ -169,7 +173,7 @@
                         <i class="bi bi-chevron-right text-muted"></i>
                     </a>
 
-                    <a href="#" class="fh-quick-action">
+                    <a href="{{ route('admin.announcements') }}" class="fh-quick-action">
                         <div class="qa-icon"><i class="bi bi-megaphone"></i></div>
                         <div class="qa-text">Объявление команде</div>
                         <i class="bi bi-chevron-right text-muted"></i>

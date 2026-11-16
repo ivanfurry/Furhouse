@@ -1,0 +1,244 @@
+/* Support Tickets Styles */
+.support-breadcrumb {
+    font-size: 0.9rem;
+    color: var(--fh-text-muted);
+    margin-bottom: 24px;
+}
+
+.support-breadcrumb a {
+    color: var(--fh-primary);
+    text-decoration: none;
+}
+
+.support-breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.support-ticket-card {
+    background: white;
+    border-radius: var(--fh-radius);
+    border: 1px solid var(--fh-border);
+    padding: 32px;
+    margin-bottom: 24px;
+}
+
+.support-ticket-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+}
+
+.support-ticket-title {
+    font-size: 1.8rem;
+    font-weight: 500;
+    margin: 0;
+    color: var(--fh-text);
+}
+
+.support-ticket-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--fh-border);
+}
+
+.support-user-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.support-user-info {
+    flex: 1;
+}
+
+.support-user-name {
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 4px;
+}
+
+.support-user-date {
+    font-size: 0.85rem;
+    color: var(--fh-text-muted);
+}
+
+.support-ticket-message {
+    line-height: 1.7;
+    font-size: 1rem;
+    color: var(--fh-text);
+    white-space: pre-wrap;
+}
+
+.support-info-panel {
+    background: white;
+    border-radius: var(--fh-radius);
+    border: 1px solid var(--fh-border);
+    padding: 24px;
+    position: sticky;
+    top: 90px;
+}
+
+.support-info-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--fh-text-muted);
+    margin-bottom: 16px;
+}
+
+.support-info-item {
+    margin-bottom: 16px;
+}
+
+.support-info-label {
+    font-size: 0.85rem;
+    color: var(--fh-text-muted);
+    margin-bottom: 4px;
+}
+
+.support-info-value {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.support-status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.support-status-open {
+    background: rgba(212, 168, 83, 0.15);
+    color: #a07820;
+}
+
+.support-status-progress {
+    background: rgba(124, 92, 156, 0.12);
+    color: var(--fh-primary-dark);
+}
+
+.support-status-resolved {
+    background: rgba(107, 158, 122, 0.12);
+    color: var(--fh-success);
+}
+
+.support-priority-high {
+    background: rgba(196, 92, 92, 0.12);
+    color: var(--fh-danger);
+}
+
+.support-priority-medium {
+    background: rgba(212, 168, 83, 0.15);
+    color: #a07820;
+}
+
+.support-priority-low {
+    background: var(--fh-bg);
+    color: var(--fh-text-muted);
+}
+
+.support-reply-form {
+    margin-top: 32px;
+    padding-top: 32px;
+    border-top: 1px solid var(--fh-border);
+}
+
+.support-reply-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+/* Tickets List */
+.tickets-list-item {
+    background: white;
+    border-radius: var(--fh-radius);
+    border: 1px solid var(--fh-border);
+    padding: 24px;
+    margin-bottom: 16px;
+    transition: all 0.2s;
+}
+
+.tickets-list-item:hover {
+    box-shadow: var(--fh-shadow);
+    border-color: var(--fh-primary-light);
+}
+
+.tickets-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.tickets-list-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.tickets-list-title a {
+    color: var(--fh-text);
+    text-decoration: none;
+}
+
+.tickets-list-title a:hover {
+    color: var(--fh-primary);
+}
+
+.tickets-list-excerpt {
+    font-size: 0.9rem;
+    color: var(--fh-text-muted);
+    margin-bottom: 12px;
+}
+
+.tickets-list-meta {
+    display: flex;
+    gap: 16px;
+    font-size: 0.85rem;
+    color: var(--fh-text-muted);
+}
+
+/* Create Ticket Form */
+.support-form-card {
+    background: white;
+    border-radius: var(--fh-radius);
+    border: 1px solid var(--fh-border);
+    padding: 40px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.support-form-title {
+    font-size: 1.6rem;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.support-form-subtitle {
+    color: var(--fh-text-muted);
+    margin-bottom: 24px;
+}
+
+.support-form-alert {
+    background: rgba(124, 92, 156, 0.08);
+    border: 1px solid var(--fh-primary-light);
+    border-radius: var(--fh-radius-sm);
+    padding: 16px;
+    margin-bottom: 24px;
+    font-size: 0.9rem;
+}
+
+.support-form-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
