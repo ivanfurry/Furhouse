@@ -66,6 +66,41 @@
                 </div>
                 @endif
 
+                {{-- Активные обращения --}}
+                @php
+                    $activeTickets = auth()->user()->supportTickets()
+                        ->where('status', '!=', 'resolved')
+                        ->with(['messages' => function($q) {
+                            $q->latest()->limit(1);
+                        }])
+                        ->orderBy('updated_at', 'desc')
+                        ->take(3)
+                        ->get();
+                @endphp
+                @if($activeTickets->count() > 0)
+                <div class="profile-tickets-block mt-4">
+                    <div class="profile-tickets-title">Активные обращения</div>
+                    @foreach($activeTickets as $ticket)
+                    <a href="{{ route('support.chat.show', $ticket) }}" class="profile-ticket-item">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="profile-ticket-name">{{ Str::limit($ticket->subject, 25) }}</span>
+                            <span class="profile-ticket-status" style="background:{{ $ticket->status_color }}20; color:{{ $ticket->status_color }};">
+                                {{ $ticket->status_label }}
+                            </span>
+                        </div>
+                        @if($ticket->messages->count() > 0)
+                            <div class="profile-ticket-preview">
+                                {{ Str::limit($ticket->messages->first()->message, 40) }}
+                            </div>
+                        @endif
+                    </a>
+                    @endforeach
+                    <a href="{{ route('support.chat.index') }}" class="profile-tickets-all">
+                        Все обращения <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+                @endif
+
                 <div class="profile-privacy-note">
                     <strong>Только для вас</strong>
                     <small>Почта скрыта от других участников.</small>

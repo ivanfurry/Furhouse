@@ -22,11 +22,21 @@
             <form method="POST" action="{{ route('support.store') }}">
                 @csrf
 
+                {{-- Блок получателя --}}
                 @if($assignedTo)
                 <div class="support-form-alert">
                     <i class="bi bi-info-circle me-2"></i>
                     Обращение будет направлено: <strong>{{ $assignedTo->display_name }}</strong>
                     <input type="hidden" name="assigned_to" value="{{ $assignedTo->id }}">
+                </div>
+                @endif
+
+                {{-- Блок услуги (пункт 5) --}}
+                @if(isset($serviceTitle) && $serviceTitle)
+                <div class="support-form-alert" style="background:rgba(107,158,122,0.08); border-color:var(--fh-success);">
+                    <i class="bi bi-briefcase me-2" style="color:var(--fh-success);"></i>
+                    Обсуждение услуги: <strong>{{ $serviceTitle }}</strong>
+                    <input type="hidden" name="service_title" value="{{ $serviceTitle }}">
                 </div>
                 @endif
 

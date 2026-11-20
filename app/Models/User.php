@@ -33,6 +33,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'restriction_reason',
         'restriction_until',
         'restricted_by',
+        'phone',
     ];
 
     protected $hidden = [
@@ -109,11 +110,6 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(ActivityLog::class);
     }
 
-    public function supportTickets(): HasMany
-    {
-        return $this->hasMany(SupportTicket::class);
-    }
-
     public function getDisplayNameAttribute(): string
     {
         return $this->nickname ? "{$this->name} «{$this->nickname}»" : $this->name;
@@ -121,7 +117,12 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function getAvatarUrlAttribute(): string
     {
-        return $this->avatar ? asset('storage/' . $this->avatar) : asset('images/default-avatar.svg');
+        
+        if ($this->avatar) {
+            return asset('storage/' . $this->avatar);
+        }
+        
+        return asset('images/default-avatar.png');
     }
 
     public function hasRestrictions(): bool
@@ -168,5 +169,34 @@ class User extends Authenticatable implements MustVerifyEmail
             return \Carbon\Carbon::parse($this->restriction_until)->format('d.m.Y H:i');
         }
         return 'Бессрочно';
+    }
+
+    public function cartItems(): HasMany
+    {
+        return $this->hasMany(CartItem::class);
+    }
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function getCartCountAttribute(): int
+    {
+        return $this->cartItems()->sum('quantity');
+    }
+
+    public function getCartTotalAttribute(): float
+    {
+        $total = 0;
+        foreach ($this->cartItems as $item) {
+            $total += $item->subtotal;
+        }
+        return $total;
+    }
+
+    public function supportTickets(): HasMany
+    {
+        return $this->hasMany(SupportTicket::class, 'user_id');
     }
 }

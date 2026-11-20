@@ -70,14 +70,21 @@
                     @endif
                 </div>
 
-                <div class="d-flex gap-3">
-                    <button class="fh-btn fh-btn-primary flex-grow-1 py-3" style="font-size:1rem;">
-                        <i class="bi bi-bag me-2"></i>Добавить в корзину
-                    </button>
-                    <button class="fh-btn fh-btn-ghost fh-btn-icon" style="width:52px; height:52px;" onclick="toggleFavorite({{ $product->id }})">
-                        <i class="bi bi-heart"></i>
-                    </button>
-                </div>
+                    <form method="POST" action="{{ route('cart.add') }}" class="d-flex gap-2">
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        <input type="hidden" name="quantity" value="1">
+                        
+                        <button type="submit" class="fh-btn fh-btn-primary flex-grow-1 py-3">
+                            <i class="bi bi-bag me-2"></i>Добавить в корзину
+                        </button>
+                        
+                        <button type="button" class="fh-btn fh-btn-outline" 
+                                style="width:56px; height:56px; padding:0; display:flex; align-items:center; justify-content:center;"
+                                onclick="toggleFavorite({{ $product->id }})">
+                            <i class="bi bi-heart"></i>
+                        </button>
+                    </form>
 
                 <!-- Stats -->
                 <div class="row g-3 mt-4">

@@ -2,12 +2,16 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\MasterController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ServiceDiscussionController;
+use App\Http\Controllers\SupportChatController;
 use App\Http\Controllers\SupportTicketController;
 use Illuminate\Support\Facades\Route;
 
@@ -116,6 +120,36 @@ Route::middleware('auth')->group(function () {
 
     // Удаление из избранного
     Route::delete('/favorites/{favorite}', [AuthController::class, 'removeFavorite'])->name('favorites.remove');
+
+    // Корзина
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+    Route::put('/cart/{cartItem}', [CartController::class, 'update'])->name('cart.update');
+    Route::delete('/cart/{cartItem}', [CartController::class, 'remove'])->name('cart.remove');
+    Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+    Route::post('/cart/checkout', [CartController::class, 'placeOrder'])->name('cart.placeOrder');
+
+    // Заказы
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+
+    // Чат обращений для пользователей
+    Route::get('/support/chat', [SupportChatController::class, 'indexForUser'])->name('support.chat.index');
+    Route::get('/support/chat/{ticket}', [SupportChatController::class, 'show'])->name('support.chat.show');
+    Route::post('/support/chat/{ticket}/message', [SupportChatController::class, 'sendMessage'])->name('support.chat.message');
+
+    // Чат обращений для персонала
+    Route::get('/staff/support', [SupportChatController::class, 'indexForStaff'])->name('staff.support.index')->middleware('moderator');
+    Route::post('/staff/support/{ticket}/assign', [SupportChatController::class, 'assignToMe'])->name('staff.support.assign')->middleware('moderator');
+    Route::post('/staff/support/{ticket}/close', [SupportChatController::class, 'closeTicket'])->name('staff.support.close')->middleware('moderator');
+
+    // Обсуждение услуг с мастерами
+    Route::get('/services/{service}/discuss', [ServiceDiscussionController::class, 'create'])->name('service-discussion.create');
+    Route::post('/services/{service}/discuss', [ServiceDiscussionController::class, 'store'])->name('service-discussion.store');
+    Route::get('/service-discussions', [ServiceDiscussionController::class, 'indexForMaster'])->name('service-discussion.master-index');
+    Route::get('/service-discussions/{ticket}', [ServiceDiscussionController::class, 'show'])->name('service-discussion.show');
+    Route::post('/service-discussions/{ticket}/message', [ServiceDiscussionController::class, 'sendMessage'])->name('service-discussion.message');
+    Route::post('/service-discussions/{ticket}/close', [ServiceDiscussionController::class, 'close'])->name('service-discussion.close');
 });
 
 // ==========================================

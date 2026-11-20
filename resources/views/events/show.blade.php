@@ -13,39 +13,56 @@
             </ol>
         </nav>
 
-        <div class="row g-5">
-            <div class="col-lg-8">
+        <div class="event-show-layout">
+            <!-- Main Content -->
+            <div>
                 <img src="{{ $event->image ? asset('storage/' . $event->image) : 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=900&h=500&fit=crop' }}" 
                      alt="{{ $event->title }}" 
-                     style="width:100%; border-radius:var(--fh-radius); margin-bottom:24px;">
-
-                <span class="fh-badge fh-badge-primary mb-3">{{ $event->type_label }}</span>
-                @if($event->is_verified)
-                    <span class="fh-badge fh-badge-success mb-3"><i class="bi bi-shield-check me-1"></i>Проверено</span>
-                @endif
-
-                <h1 style="font-size:2.2rem; font-weight:400; margin-bottom:16px;">{{ $event->title }}</h1>
-
-                <div class="d-flex flex-wrap gap-4 mb-4" style="font-size:0.95rem; color:var(--fh-text-muted);">
-                    <span><i class="bi bi-calendar me-2"></i>{{ $event->starts_at->format('d M Y, H:i') }}</span>
-                    <span><i class="bi bi-geo-alt me-2"></i>{{ $event->city }}{{ $event->location ? ', ' . $event->location : '' }}</span>
-                    <span><i class="bi bi-people me-2"></i>{{ $event->participants_count }} / {{ $event->max_guests ?? '∞' }} гостей</span>
-                    <span><i class="bi bi-tag me-2"></i>{{ $event->is_free ? 'Бесплатно' : number_format($event->price, 0, '.', ' ') . ' ₽' }}</span>
+                     class="event-main-image">
+                
+                <div class="event-badges">
+                    <span class="fh-badge fh-badge-primary">{{ $event->type_label }}</span>
+                    @if($event->is_verified)
+                        <span class="fh-badge fh-badge-success"><i class="bi bi-shield-check me-1"></i>Проверено</span>
+                    @endif
                 </div>
 
-                <div style="line-height:1.8; font-size:1rem; color:var(--fh-text);">
+                <h1 class="event-title">{{ $event->title }}</h1>
+
+                <div class="event-meta">
+                    <div class="event-meta-item">
+                        <i class="bi bi-calendar"></i>
+                        <span>{{ $event->starts_at->format('d M Y, H:i') }}</span>
+                    </div>
+                    <div class="event-meta-item">
+                        <i class="bi bi-geo-alt"></i>
+                        <span>{{ $event->city }}{{ $event->location ? ', ' . $event->location : '' }}</span>
+                    </div>
+                    <div class="event-meta-item">
+                        <i class="bi bi-people"></i>
+                        <span>{{ $event->participants_count }} / {{ $event->max_guests ?? '∞' }} гостей</span>
+                    </div>
+                    <div class="event-meta-item">
+                        <i class="bi bi-tag"></i>
+                        <span>{{ $event->is_free ? 'Бесплатно' : number_format($event->price, 0, '.', ' ') . ' ₽' }}</span>
+                    </div>
+                </div>
+
+                <div class="event-description">
                     {!! nl2br(e($event->description)) !!}
                 </div>
 
                 @if($event->participants->count() > 0)
-                <div class="mt-5">
-                    <h3 style="font-size:1.3rem; font-weight:600; margin-bottom:16px;">Участники ({{ $event->participants_count }})</h3>
-                    <div class="d-flex flex-wrap gap-2">
+                <div class="event-participants">
+                    <h3 class="event-participants-title">Участники ({{ $event->participants_count }})</h3>
+                    <div class="event-participants-avatars">
                         @foreach($event->participants->take(12) as $participant)
-                            <img src="{{ $participant->user->avatar_url }}" class="fh-avatar" title="{{ $participant->user->name }}" style="border:2px solid white; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+                            <img src="{{ $participant->user->avatar_url }}" 
+                                 class="event-participant-avatar" 
+                                 title="{{ $participant->user->name }}">
                         @endforeach
                         @if($event->participants->count() > 12)
-                            <div class="fh-avatar d-flex align-items-center justify-content-center" style="background:var(--fh-primary); color:white; font-weight:600; font-size:0.85rem;">
+                            <div class="event-participants-more">
                                 +{{ $event->participants->count() - 12 }}
                             </div>
                         @endif
@@ -54,31 +71,34 @@
                 @endif
             </div>
 
-            <div class="col-lg-4">
-                <div class="fh-card p-4 sticky-top" style="top:90px;">
-                    <div class="d-flex align-items-center gap-3 mb-4">
-                        <img src="{{ $event->user->avatar_url }}" class="fh-avatar fh-avatar-lg" alt="">
+            <!-- Sidebar -->
+            <div>
+                <div class="event-sidebar-card">
+                    <div class="event-organizer">
+                        <img src="{{ $event->user->avatar_url }}" class="event-organizer-avatar" alt="">
                         <div>
-                            <div style="font-size:0.75rem; color:var(--fh-text-muted); text-transform:uppercase; letter-spacing:0.5px;">Организатор</div>
-                            <div style="font-weight:600;">{{ $event->user->display_name }}</div>
+                            <div class="event-organizer-label">Организатор</div>
+                            <div class="event-organizer-name">{{ $event->user->display_name }}</div>
                             @if($event->user->is_verified)
-                                <span class="fh-badge fh-badge-success" style="font-size:0.7rem; margin-top:4px;"><i class="bi bi-shield-check me-1"></i>Проверен</span>
+                                <span class="fh-badge fh-badge-success" style="font-size:0.7rem; margin-top:4px;">
+                                    <i class="bi bi-shield-check me-1"></i>Проверен
+                                </span>
                             @endif
                         </div>
                     </div>
 
-                    <div class="mb-4" style="padding:16px; background:var(--fh-bg); border-radius:12px;">
-                        <div class="d-flex justify-content-between mb-2">
-                            <span style="font-size:0.85rem; color:var(--fh-text-muted);">Дата</span>
-                            <span style="font-weight:600;">{{ $event->starts_at->format('d M') }}</span>
+                    <div class="event-info-box">
+                        <div class="event-info-row">
+                            <span class="event-info-label">Дата</span>
+                            <span class="event-info-value">{{ $event->starts_at->format('d M') }}</span>
                         </div>
-                        <div class="d-flex justify-content-between mb-2">
-                            <span style="font-size:0.85rem; color:var(--fh-text-muted);">Время</span>
-                            <span style="font-weight:600;">{{ $event->starts_at->format('H:i') }}</span>
+                        <div class="event-info-row">
+                            <span class="event-info-label">Время</span>
+                            <span class="event-info-value">{{ $event->starts_at->format('H:i') }}</span>
                         </div>
-                        <div class="d-flex justify-content-between">
-                            <span style="font-size:0.85rem; color:var(--fh-text-muted);">Место</span>
-                            <span style="font-weight:600; text-align:right;">{{ $event->city }}</span>
+                        <div class="event-info-row">
+                            <span class="event-info-label">Место</span>
+                            <span class="event-info-value">{{ $event->city }}</span>
                         </div>
                     </div>
 
@@ -86,32 +106,33 @@
                         @if($isParticipant)
                             <form method="POST" action="{{ route('events.cancel', $event) }}">
                                 @csrf
-                                <button type="submit" class="fh-btn fh-btn-ghost w-100 py-3">
-                                    <i class="bi bi-x-circle me-2"></i>Отменить участие
+                                <button type="submit" class="event-action-btn event-action-btn--ghost">
+                                    <i class="bi bi-x-circle"></i>Отменить участие
                                 </button>
                             </form>
-                            <div class="text-center mt-3">
-                                <span class="fh-badge fh-badge-success w-100"><i class="bi bi-check-circle me-1"></i>Вы участвуете</span>
+                            <div class="event-participation-status">
+                                <i class="bi bi-check-circle me-1"></i>Вы участвуете
                             </div>
                         @else
                             <form method="POST" action="{{ route('events.participate', $event) }}">
                                 @csrf
-                                <button type="submit" class="fh-btn fh-btn-primary w-100 py-3" {{ $event->max_guests && $event->participants_count >= $event->max_guests ? 'disabled' : '' }}>
-                                    <i class="bi bi-check-circle me-2"></i>Записаться
+                                <button type="submit" class="event-action-btn event-action-btn--primary" 
+                                        {{ $event->max_guests && $event->participants_count >= $event->max_guests ? 'disabled' : '' }}>
+                                    <i class="bi bi-check-circle"></i>Записаться
                                 </button>
                             </form>
                         @endif
                     @else
-                        <a href="{{ route('login') }}" class="fh-btn fh-btn-primary w-100 py-3 text-center">
+                        <a href="{{ route('login') }}" class="event-action-btn event-action-btn--primary text-center">
                             Войти для записи
                         </a>
                     @endauth
 
-                    <div class="mt-4 pt-4" style="border-top:1px solid var(--fh-border);">
-                        <h6 style="font-size:0.85rem; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:var(--fh-text-muted); margin-bottom:12px;">Правила встречи</h6>
-                        <ul style="font-size:0.9rem; color:var(--fh-text-muted); padding-left:20px; margin:0;">
-                            <li class="mb-2">Уважайте всех участников</li>
-                            <li class="mb-2">Следуйте кодексу сообщества</li>
+                    <div class="event-rules">
+                        <div class="event-rules-title">Правила встречи</div>
+                        <ul class="event-rules-list">
+                            <li>Уважайте всех участников</li>
+                            <li>Следуйте кодексу сообщества</li>
                             <li>Приходите вовремя</li>
                         </ul>
                     </div>

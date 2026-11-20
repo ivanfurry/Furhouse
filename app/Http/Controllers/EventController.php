@@ -44,7 +44,13 @@ class EventController extends Controller
     public function show(Event $event)
     {
         $event->load(['user', 'participants.user']);
-        $isParticipant = auth()->check() && $event->participants()->where('user_id', auth()->id())->exists();
+        
+        
+        $isParticipant = auth()->check() 
+            && $event->participants()
+                ->where('user_id', auth()->id())
+                ->where('status', '!=', 'cancelled')
+                ->exists();
 
         return view('events.show', compact('event', 'isParticipant'));
     }
@@ -80,7 +86,7 @@ class EventController extends Controller
         $validated['user_id'] = auth()->id();
         $validated['slug'] = Str::slug($validated['title']) . '-' . Str::random(6);
         $validated['is_free'] = !($validated['price'] ?? 0) > 0;
-        $validated['status'] = auth()->user()->isVerified() ? 'approved' : 'pending';
+        $validated['status'] = auth()->user()->is_verified ? 'approved' : 'pending';
 
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('events', 'public');
@@ -98,12 +104,17 @@ class EventController extends Controller
             return redirect()->route('login')->with('error', 'Войдите для участия.');
         }
 
+        if (!auth()->user()->can_create_events && false) {
+            // заглушка, если нужна проверка
+        }
+
         $existing = $event->participants()->where('user_id', auth()->id())->first();
 
         if ($existing) {
             if ($existing->status === 'cancelled') {
-                $existing->update(['status' => 'pending']);
+                $existing->update(['status' => 'confirmed']);
                 $event->increment('participants_count');
+                return back()->with('success', 'Вы снова участвуете в этой встрече!');
             }
             return back()->with('info', 'Вы уже участвуете в этой встрече.');
         }
@@ -123,14 +134,18 @@ class EventController extends Controller
 
     public function cancelParticipation(Event $event)
     {
-        $participant = $event->participants()->where('user_id', auth()->id())->first();
+        $participant = $event->participants()
+            ->where('user_id', auth()->id())
+            ->where('status', '!=', 'cancelled')
+            ->first();
 
         if ($participant) {
             $participant->update(['status' => 'cancelled']);
             $event->decrement('participants_count');
+            return back()->with('success', 'Участие отменено.');
         }
 
-        return back()->with('success', 'Участие отменено.');
+        return back()->with('error', 'Вы не участвуете в этой встрече.');
     }
 
     private function authorizeOrganizer(): void

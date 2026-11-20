@@ -158,7 +158,7 @@
                             <div class="product-image-wrap">
                                 <img src="{{ $product->image ? asset('storage/' . $product->image) : 'https://via.placeholder.com/400x300/e8e0f0/7c5c9c?text=' . urlencode($product->title) }}" 
                                      alt="{{ $product->title }}">
-                                <button class="favorite-btn" onclick="event.preventDefault(); toggleFavorite({{ $product->id }})">
+                                <button class="favorite-btn" onclick="event.preventDefault(); toggleFavorite({{ $product->id }}, this)">
                                     <i class="bi bi-heart"></i>
                                 </button>
                             </div>
@@ -173,9 +173,9 @@
                                         <span class="product-rating">
                                             <i class="bi bi-star-fill"></i> {{ number_format($product->rating, 1) }}
                                         </span>
-                                        <button class="add-to-cart-btn" onclick="event.preventDefault();">
-                                            <i class="bi bi-bag"></i>
-                                        </button>
+                                    <button class="add-to-cart-btn" onclick="event.preventDefault(); addToCart({{ $product->id }}, this)" title="Добавить в корзину">
+                                        <i class="bi bi-bag"></i>
+                                    </button>
                                     </div>
                                 </div>
                             </div>
@@ -205,39 +205,3 @@
     </div>
 </section>
 @endsection
-
-@push('scripts')
-<script>
-function toggleFavorite(productId) {
-    fetch(`/products/${productId}/favorite`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-            'Accept': 'application/json'
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        const btn = event.currentTarget;
-        const icon = btn.querySelector('i');
-        if (data.favorited) {
-            icon.classList.remove('bi-heart');
-            icon.classList.add('bi-heart-fill');
-            btn.classList.add('active');
-        } else {
-            icon.classList.remove('bi-heart-fill');
-            icon.classList.add('bi-heart');
-            btn.classList.remove('active');
-        }
-    });
-}
-
-// Auto-submit filters on checkbox change
-document.querySelectorAll('#filterForm input[type="checkbox"]').forEach(cb => {
-    cb.addEventListener('change', () => {
-        document.getElementById('filterForm').submit();
-    });
-});
-</script>
-@endpush

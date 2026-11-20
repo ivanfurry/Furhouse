@@ -231,33 +231,3 @@
     </div>
 </section>
 @endsection
-
-@push('scripts')
-<script>
-function toggleFavorite(productId) {
-    fetch(`/products/${productId}/favorite`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-            'Accept': 'application/json'
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        // Visual feedback
-        const btn = event.currentTarget;
-        const icon = btn.querySelector('i');
-        if (data.favorited) {
-            icon.classList.remove('bi-heart');
-            icon.classList.add('bi-heart-fill');
-            btn.classList.add('active');
-        } else {
-            icon.classList.remove('bi-heart-fill');
-            icon.classList.add('bi-heart');
-            btn.classList.remove('active');
-        }
-    });
-}
-</script>
-@endpush

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SupportMessage;
 use App\Models\SupportTicket;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -17,6 +18,9 @@ class SupportTicketController extends Controller
     public function index()
     {
         $tickets = SupportTicket::where('user_id', auth()->id())
+            ->with(['assignedUser', 'messages' => function ($q) {
+                $q->latest()->limit(1);
+            }])
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
@@ -27,15 +31,22 @@ class SupportTicketController extends Controller
     public function create(Request $request)
     {
         $assignedTo = null;
+        $serviceTitle = null;
         
-        // Если передан ID получателя (из кнопки "Сообщение" в команде)
         if ($request->filled('to')) {
-            $assignedTo = User::whereIn('role', ['admin', 'moderator'])
+            $assignedTo = User::whereIn('role', ['admin', 'moderator', 'master'])
                 ->where('id', $request->to)
                 ->first();
         }
 
-        return view('support.create', compact('assignedTo'));
+        if ($request->filled('service')) {
+            $service = \App\Models\Service::find($request->service);
+            if ($service) {
+                $serviceTitle = $service->title;
+            }
+        }
+
+        return view('support.create', compact('assignedTo', 'serviceTitle'));
     }
 
     // Сохранение обращения
@@ -48,13 +59,25 @@ class SupportTicketController extends Controller
             'assigned_to' => 'nullable|exists:users,id',
         ]);
 
-        $validated['user_id'] = auth()->id();
-        $validated['status'] = 'open';
+        $ticket = SupportTicket::create([
+            'user_id' => auth()->id(),
+            'subject' => $validated['subject'],
+            'message' => $validated['message'],
+            'status' => 'open',
+            'priority' => $validated['priority'],
+            'assigned_to' => $validated['assigned_to'] ?? null,
+        ]);
 
-        $ticket = SupportTicket::create($validated);
+        // Создаём первое сообщение
+        SupportMessage::create([
+            'ticket_id' => $ticket->id,
+            'user_id' => auth()->id(),
+            'message' => $validated['message'],
+            'is_staff' => false,
+        ]);
 
-        return redirect()->route('support.show', $ticket)
-            ->with('success', 'Обращение создано! Персонал ответит вам в ближайшее время.');
+        return redirect()->route('support.chat.show', $ticket)
+            ->with('success', 'Обращение создано!');
     }
 
     // Просмотр конкретного обращения

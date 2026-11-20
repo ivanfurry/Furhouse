@@ -1,0 +1,352 @@
+/* Masters Page Styles */
+.masters-breadcrumb {
+    font-size: 0.9rem;
+    color: var(--fh-text-muted);
+    margin-bottom: 24px;
+}
+
+.masters-breadcrumb a {
+    color: var(--fh-primary);
+    text-decoration: none;
+}
+
+.masters-breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.masters-layout {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 24px;
+    align-items: start;
+}
+
+@media (max-width: 992px) {
+    .masters-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Master Card */
+.master-card {
+    background: white;
+    border-radius: var(--fh-radius);
+    border: 1px solid var(--fh-border);
+    padding: 32px;
+}
+
+.master-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--fh-border);
+}
+
+.master-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--fh-border);
+}
+
+.master-name {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.master-name .verified-badge {
+    color: var(--fh-primary);
+    font-size: 1.2rem;
+}
+
+.master-nickname {
+    font-size: 0.9rem;
+    color: var(--fh-text-muted);
+}
+
+.master-category-badge {
+    display: inline-block;
+    background: rgba(124, 92, 156, 0.12);
+    color: var(--fh-primary-dark);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.master-title {
+    font-size: 1.8rem;
+    font-weight: 500;
+    margin-bottom: 16px;
+    color: var(--fh-text);
+}
+
+.master-meta {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+    font-size: 0.95rem;
+    color: var(--fh-text-muted);
+}
+
+.master-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.master-meta-item i {
+    color: var(--fh-primary);
+}
+
+.master-meta-item .rating-value {
+    font-weight: 600;
+    color: var(--fh-text);
+}
+
+.master-description {
+    line-height: 1.7;
+    font-size: 1rem;
+    color: var(--fh-text);
+    margin-bottom: 24px;
+}
+
+/* Sidebar */
+.master-sidebar {
+    background: white;
+    border-radius: var(--fh-radius);
+    border: 1px solid var(--fh-border);
+    padding: 28px;
+    position: sticky;
+    top: 90px;
+}
+
+.sidebar-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--fh-text-muted);
+    margin-bottom: 8px;
+}
+
+.sidebar-price {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--fh-primary-dark);
+    margin-bottom: 20px;
+}
+
+.sidebar-info-box {
+    background: var(--fh-bg);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 24px;
+}
+
+.sidebar-info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.sidebar-info-row:last-child {
+    margin-bottom: 0;
+}
+
+.sidebar-info-label {
+    font-size: 0.85rem;
+    color: var(--fh-text-muted);
+}
+
+.sidebar-info-value {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+/* Action Buttons */
+.master-action-btn {
+    width: 100%;
+    padding: 14px 24px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    margin-bottom: 12px;
+}
+
+.master-action-btn--primary {
+    background: var(--fh-primary);
+    color: white;
+}
+
+.master-action-btn--primary:hover {
+    background: var(--fh-primary-dark);
+    transform: translateY(-1px);
+    box-shadow: var(--fh-shadow);
+    color: white;
+}
+
+.master-action-btn--outline {
+    background: white;
+    color: var(--fh-text);
+    border: 1.5px solid var(--fh-border);
+}
+
+.master-action-btn--outline:hover {
+    border-color: var(--fh-primary);
+    color: var(--fh-primary);
+}
+
+.master-action-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* About Master */
+.master-about {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--fh-border);
+}
+
+.master-about-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--fh-text-muted);
+    margin-bottom: 8px;
+}
+
+.master-about-text {
+    font-size: 0.9rem;
+    color: var(--fh-text-muted);
+    line-height: 1.6;
+}
+
+/* Status Badge */
+.status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.status-badge--active {
+    background: rgba(107, 158, 122, 0.12);
+    color: var(--fh-success);
+}
+
+.status-badge--busy {
+    background: rgba(212, 168, 83, 0.15);
+    color: #a07820;
+}
+
+.status-badge--inactive {
+    background: var(--fh-bg);
+    color: var(--fh-text-muted);
+}
+
+/* Masters Index */
+.masters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+}
+
+.master-card-index {
+    background: white;
+    border-radius: var(--fh-radius);
+    border: 1px solid var(--fh-border);
+    padding: 24px;
+    transition: all 0.3s;
+    text-decoration: none;
+    color: inherit;
+}
+
+.master-card-index:hover {
+    box-shadow: var(--fh-shadow-lg);
+    transform: translateY(-2px);
+}
+
+.master-card-index-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+}
+
+.master-card-index-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--fh-border);
+}
+
+.master-card-index-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.master-card-index-nickname {
+    font-size: 0.85rem;
+    color: var(--fh-text-muted);
+}
+
+.master-card-index-title {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 12px;
+    color: var(--fh-text);
+}
+
+.master-card-index-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    border-top: 1px solid var(--fh-border);
+}
+
+.master-card-index-price {
+    font-weight: 700;
+    color: var(--fh-primary-dark);
+}
+
+.master-card-index-rating {
+    font-size: 0.85rem;
+    color: var(--fh-warning);
+}
+
+@media (max-width: 768px) {
+    .master-title {
+        font-size: 1.4rem;
+    }
+    .master-sidebar {
+        position: static;
+    }
+    .master-header {
+        flex-direction: column;
+        text-align: center;
+    }
+}

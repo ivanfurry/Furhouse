@@ -64,8 +64,11 @@ class AuthController extends Controller
             'nickname' => $validated['nickname'] ?? null,
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
-            'city' => $validated['city'] ?? null,
             'role' => User::ROLE_USER,
+            'avatar' => null,
+            'is_verified' => false,
+            'is_active' => true,
+            'email_verified_at' => now(),
         ]);
 
         Auth::login($user);

@@ -22,6 +22,30 @@
     <link rel="stylesheet" href="{{ asset('css/rules.css') }}">
     @endif
 
+    @if(request()->routeIs('cart.*') || request()->routeIs('orders.*'))
+    <link rel="stylesheet" href="{{ asset('css/cart.css') }}">
+    @endif
+
+    @if(request()->routeIs('events.*'))
+    <link rel="stylesheet" href="{{ asset('css/events.css') }}">
+    @endif
+
+    @if(request()->routeIs('masters.*'))
+        <link rel="stylesheet" href="{{ asset('css/masters.css') }}">
+    @endif
+
+    @if(request()->routeIs('admin.users*'))
+        <link rel="stylesheet" href="{{ asset('css/admin-users.css') }}">
+    @endif
+
+    @if(request()->routeIs('support.chat.*') || request()->routeIs('staff.support.*'))
+    <link rel="stylesheet" href="{{ asset('css/support-chat.css') }}">
+    @endif
+
+    @if(request()->routeIs('service-discussion.*') || request()->routeIs('support.chat.*'))
+        <link rel="stylesheet" href="{{ asset('css/support-chat.css') }}">
+    @endif
+
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
@@ -1251,22 +1275,22 @@
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="fh-navbar sticky-top">
+    <nav class="fh-navbar">
         <div class="container">
-            <div class="d-flex align-items-center justify-content-between w-100">
-                <!-- Brand -->
+            <div class="d-flex align-items-center justify-content-between">
+                <!-- Logo -->
                 <a href="{{ route('home') }}" class="navbar-brand">
                     <div class="brand-icon">
                         <i class="bi bi-house-heart"></i>
                     </div>
                     <div>
                         <strong>FurHouse</strong>
-                        <small>Community Market</small>
+                        <small>COMMUNITY MARKET</small>
                     </div>
                 </a>
 
-                <!-- Navigation -->
-                <div class="d-none d-lg-flex align-items-center gap-1">
+                <!-- Navigation Links -->
+                <div class="d-none d-lg-flex align-items-center gap-1 mx-4">
                     <a href="{{ route('home') }}" class="fh-nav-link {{ request()->routeIs('home') ? 'active' : '' }}">Главная</a>
                     <a href="{{ route('products.index') }}" class="fh-nav-link {{ request()->routeIs('products.*') ? 'active' : '' }}">Товары</a>
                     <a href="{{ route('masters.index') }}" class="fh-nav-link {{ request()->routeIs('masters.*') ? 'active' : '' }}">Мастера</a>
@@ -1275,24 +1299,53 @@
                     <a href="{{ route('team') }}" class="fh-nav-link {{ request()->routeIs('team') ? 'active' : '' }}">Команда</a>
                 </div>
 
-                <!-- Right side -->
+                <!-- Right Side: Cart + Auth Buttons -->
                 <div class="d-flex align-items-center gap-2">
-                    <button class="fh-btn fh-btn-icon fh-btn-ghost" title="Поиск">
-                        <i class="bi bi-search"></i>
-                    </button>
-
                     @auth
+                        {{-- Корзина --}}
+                        <a href="{{ route('cart.index') }}" class="fh-btn fh-btn-icon fh-btn-ghost navbar-cart-btn" title="Корзина">
+                            <i class="bi bi-bag"></i>
+                            @if(auth()->user()->cart_count > 0)
+                                <span class="navbar-cart-badge">{{ auth()->user()->cart_count }}</span>
+                            @endif
+                        </a>
+
+                        {{-- Профиль --}}
                         <div class="dropdown">
-                            <button class="fh-btn fh-btn-outline dropdown-toggle" data-bs-toggle="dropdown">
-                                <img src="{{ auth()->user()->avatar_url }}" alt="" class="fh-avatar me-2" style="width:28px;height:28px;">
-                                {{ auth()->user()->name }}
+                            <button class="btn btn-link dropdown-toggle d-flex align-items-center gap-2 text-decoration-none" 
+                                    type="button" 
+                                    data-bs-toggle="dropdown"
+                                    style="color:var(--fh-text); font-weight:500; font-size:0.9rem;">
+                                <img src="{{ auth()->user()->avatar_url }}" class="fh-avatar" style="width:32px; height:32px;">
+                                <span>{{ auth()->user()->name }}</span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
+                                @if(auth()->user()->isAdmin())
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
+                                        <i class="bi bi-shield-lock me-2"></i>Админ-панель
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                @endif
+                                @if(auth()->user()->isModerator())
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('staff.support.index') }}">
+                                        <i class="bi bi-chat-square-text me-2"></i>Обращения (персонал)
+                                    </a>
+                                </li>
+                                @endif
+                                @if(auth()->user()->isMaster())
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('service-discussion.master-index') }}">
+                                        <i class="bi bi-chat-square-text me-2"></i>Заявки на обсуждение
+                                    </a>
+                                </li>
+                                @endif
+                                <li><a class="dropdown-item" href="{{ route('cart.index') }}"><i class="bi bi-bag me-2"></i>Корзина</a></li>
+                                <li><a class="dropdown-item" href="{{ route('orders.index') }}"><i class="bi bi-receipt me-2"></i>Мои заказы</a></li>
                                 <li><a class="dropdown-item" href="{{ route('support.index') }}"><i class="bi bi-life-preserver me-2"></i>Мои обращения</a></li>
                                 <li><a class="dropdown-item" href="{{ route('profile') }}"><i class="bi bi-person me-2"></i>Профиль</a></li>
-                                @if(auth()->user()->isAdmin())
-                                    <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}"><i class="bi bi-shield-check me-2"></i>Админ-панель</a></li>
-                                @endif
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <form method="POST" action="{{ route('logout') }}">
@@ -1303,8 +1356,11 @@
                             </ul>
                         </div>
                     @else
+                        {{-- Гостевые кнопки --}}
                         <a href="{{ route('login') }}" class="fh-btn fh-btn-outline">Войти</a>
-                        <a href="{{ route('register') }}" class="fh-btn fh-btn-primary">+ Разместить</a>
+                        <a href="{{ route('register') }}" class="fh-btn fh-btn-primary">
+                            <i class="bi bi-plus me-1"></i>Разместить
+                        </a>
                     @endauth
                 </div>
             </div>
@@ -1411,29 +1467,8 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- CSRF Token for AJAX -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Auto-hide toasts
-            setTimeout(function() {
-                const toasts = document.querySelectorAll('.fh-toast');
-                toasts.forEach(function(toast) {
-                    toast.style.transition = 'opacity 0.5s';
-                    toast.style.opacity = '0';
-                    setTimeout(() => toast.remove(), 500);
-                });
-            }, 4000);
-
-            // Setup AJAX headers
-            const meta = document.querySelector('meta[name="csrf-token"]');
-            if (meta) {
-                const token = meta.getAttribute('content');
-                if (window.axios) {
-                    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token;
-                }
-            }
-        });
-    </script>
+    <!-- FurHouse Global JS -->
+    <script src="{{ asset('js/app.js') }}"></script>
 
     @stack('scripts')
 </body>

@@ -102,4 +102,9 @@ class Event extends Model
     {
         return $this->starts_at->format('d M, H:i');
     }
+
+    public function activeParticipants(): HasMany
+    {
+        return $this->hasMany(EventParticipant::class)->where('status', '!=', 'cancelled');
+    }
 }
