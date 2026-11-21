@@ -1,66 +1,127 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🏠 FurHouse Community Market
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**FurHouse** — маркетплейс для фурри-сообщества, где участники могут покупать авторские работы, находить мастеров, организовывать встречи и общаться на форуме.
 
-## About Laravel
+![FurHouse Banner](screenshots/home.png)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 📋 Содержание
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- [Описание](#описание)
+- [Возможности](#возможности)
+- [Роли пользователей](#роли-пользователей)
+- [Скриншоты](#скриншоты)
+- [Стек технологий](#стек-технологий)
+- [Структура проекта](#структура-проекта)
+- [Установка](#установка)
+- [Запуск](#запуск)
+- [База данных](#база-данных)
+- [Лицензия](#лицензия)
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 📖 Описание
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+FurHouse решает проблему разрозненности фурри-сообщества: сейчас мастера продают работы через разные платформы, встречи организуются в чатах, а поиск услуг затруднён. Проект объединяет всё в одном месте с модерацией, верификацией мастеров и безопасными сделками.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+**Целевая аудитория:**
+- Художники и мастера (продажа работ и услуг)
+- Организаторы встреч и фестивалей
+- Покупатели и коллекционеры
+- Модераторы сообщества
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## ✨ Возможности
 
-### Premium Partners
+### 🛍️ Маркетплейс
+- Каталог товаров с фильтрацией по категориям
+- Карточки товаров с галереей изображений
+- Система рейтингов и отзывов
+- Избранное (polymorphic связь)
+- Корзина и оформление заказов
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### 🎨 Услуги мастеров
+- Каталог услуг с категориями (арт, костюмы, 3D, музыка)
+- Обсуждение заказа через встроенный чат
+- Модерация услуг перед публикацией
 
-## Contributing
+### 🎉 Встречи и события
+- Афиша мероприятий по городам
+- Запись на встречи с лимитом участников
+- Разные типы: прогулки, пикники, фестивали
+- Модерация событий
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 💬 Форум
+- Доски по тематикам (/art/, /craft/, /meet/)
+- Треды с модерацией
+- Система "лучший ответ"
+- Закреплённые и избранные темы
 
-## Code of Conduct
+### 🛡️ Поддержка и безопасность
+- Система обращений с чатом
+- Назначение обращений персоналу
+- Журнал активности с IP-адресами
+- Объявления для команды
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 👑 Админ-панель
+- Управление пользователями и ролями
+- Верификация мастеров и организаторов
+- Система ограничений (can_post_*)
+- Модерация контента
+- Статистика и аналитика
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 👥 Роли пользователей
 
-## License
+| Роль | Возможности |
+|------|-------------|
+| **Гость** | Просмотр каталога, регистрация |
+| **Пользователь** | Покупка, избранное, обращения, форум |
+| **Мастер** | Размещение услуг, чат с клиентами |
+| **Организатор** | Создание встреч, управление участниками |
+| **Модератор** | Модерация контента, обработка обращений |
+| **Администратор** | Полный доступ, управление ролями |
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## 📸 Скриншоты
+
+### Главная страница
+![Главная](public/storage/screenshots/home.png)
+
+### Каталог товаров
+![Каталог](public/storage/screenshots/products.png)
+
+### Страница товара
+![Товар](public/storage/screenshots/product-show.png)
+
+### Услуги мастеров
+![Мастера](public/storage/screenshots/masters.png)
+
+### Встречи
+![Встречи](public/storage/screenshots/events.png)
+
+### Форум
+![Форум](public/storage/screenshots/forum.png)
+
+### Корзина
+![Корзина](public/storage/screenshots/cart.png)
+
+### Профиль пользователя
+![Профиль](public/storage/screenshots/profile.png)
+
+### Чат обращений
+![Чат](public/storage/screenshots/support-chat.png)
+
+### Админ-панель
+![Админка](public/storage/screenshots/admin-dashboard.png)
+
+### Управление пользователями
+![Пользователи](public/storage/screenshots/admin-users.png)
+
+
+### ER-Диаграмма из Mermaid.live
+![ER-Диаграмма](public/storage/screenshots/ER-diagram.png)
