@@ -2,7 +2,7 @@
 
 **FurHouse** — маркетплейс для фурри-сообщества, где участники могут покупать авторские работы, находить мастеров, организовывать встречи и общаться на форуме.
 
-![FurHouse Banner](screenshots/home.png)
+![FurHouse Banner](public/storage/screenshots/banner.png)
 
 ---
 
