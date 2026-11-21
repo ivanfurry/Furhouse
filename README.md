@@ -2,7 +2,7 @@
 
 **FurHouse** — маркетплейс для фурри-сообщества, где участники могут покупать авторские работы, находить мастеров, организовывать встречи и общаться на форуме.
 
-![FurHouse Banner](public/storage/screenshots/banner.png)
+![FurHouse Banner](resources/screenshots/banner.png)
 
 ---
 
@@ -90,38 +90,38 @@ FurHouse решает проблему разрозненности фурри-�
 ## 📸 Скриншоты
 
 ### Главная страница
-![Главная](public/storage/screenshots/home.png)
+![Главная](resources/screenshots/home.png)
 
 ### Каталог товаров
-![Каталог](public/storage/screenshots/products.png)
+![Каталог](resources/screenshots/products.png)
 
 ### Страница товара
-![Товар](public/storage/screenshots/product-show.png)
+![Товар](resources/screenshots/product-show.png)
 
 ### Услуги мастеров
-![Мастера](public/storage/screenshots/masters.png)
+![Мастера](resources/screenshots/masters.png)
 
 ### Встречи
-![Встречи](public/storage/screenshots/events.png)
+![Встречи](resources/screenshots/events.png)
 
 ### Форум
-![Форум](public/storage/screenshots/forum.png)
+![Форум](resources/screenshots/forum.png)
 
 ### Корзина
-![Корзина](public/storage/screenshots/cart.png)
+![Корзина](resources/screenshots/cart.png)
 
 ### Профиль пользователя
-![Профиль](public/storage/screenshots/profile.png)
+![Профиль](resources/screenshots/profile.png)
 
 ### Чат обращений
-![Чат](public/storage/screenshots/support-chat.png)
+![Чат](resources/screenshots/support-chat.png)
 
 ### Админ-панель
-![Админка](public/storage/screenshots/admin-dashboard.png)
+![Админка](resources/screenshots/admin-dashboard.png)
 
 ### Управление пользователями
-![Пользователи](public/storage/screenshots/admin-users.png)
+![Пользователи](resources/screenshots/admin-users.png)
 
 
 ### ER-Диаграмма из Mermaid.live
-![ER-Диаграмма](public/storage/screenshots/ER-diagram.png)
+![ER-Диаграмма](resources/screenshots/ER-diagram.png)
